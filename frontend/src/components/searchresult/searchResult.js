@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { NavLink as Link, useParams } from "react-router-dom";
-import Header from "../header/header";
-import Search from "../search/search";
 import "./searchResult.css";
 import { MdLanguage } from "react-icons/md";
 import { MdList } from "react-icons/md";
+import SearchResultStays from './searchResultStays';
+import Footer from '../footer/footer';
+
 
 export default class SearchResult extends Component {
   constructor(props) {
@@ -14,12 +14,12 @@ export default class SearchResult extends Component {
       result: [],
     };
   }
-
-  renderArtist(artist) {
+  
+  renderStays(stayInfo) {
     console.log("yes");
-
-    return (
-      <div className=" ">
+    if(stayInfo && stayInfo.length>0){
+      return (
+        <div className=" ">
         <div className="row">
           <div className="col-12">
             <div className="header-searchResult container-fluid ">
@@ -28,45 +28,79 @@ export default class SearchResult extends Component {
               </svg>
 
               <div className=" d-flex right-side-header justify-content-center align-items-center">
-         
-         <h4 className="style-heading">Become a host</h4>
-              <MdLanguage size="20px" className="m-3" />
-              <button className=" box-content d-flex  p-2  ">     
+                <h4 className="style-heading">Become a host</h4>
+                <MdLanguage size="20px" className="m-3" />
+                <button className=" box-content d-flex  p-2  ">     
                   <MdList className=" ml-0" size="30px"/>
-                  <img className=" d-inline rounded-circle img-fluid" src="images/logo.png" alt="profile-image" />
-              </button>
-         </div>
-      
-
+                  <img className=" d-inline rounded-circle img-fluid" src="/images/logo.png" alt="profile-image" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
-     
-        <div className="side-map">
-            
+        <div className='row mb-5'>
+          <div className='side-stays col-12 col-xl-8 col-md-8'>
+            <div>
+              {this.state.result.map(item => (
+                <p className='ml-5'>{item.hoistig.length} stays</p>
+                ))}
+              {this.state.result.map(item => (
+                <h1>Stays in <span>{item.location}</span> Governorate </h1>
+              ))}
+              <div className='button'>
+                <h5 className='d-inline ml-3'>Filter : </h5>
+                <button>Rate</button>
+                <button>Price</button>
+ 
+              </div>
+              <p className='ml-5'>Review COVID-19 travel restrictions before you book...</p>
+              <hr/>
+              {this.state.result.map(item => (
+                <p key={item.id}>
+                  <SearchResultStays stayInfo = {item.hoistig}/>
+                </p>
+              ))}
+            </div>
+
+          </div>
+      
+          <div className="side-map col-12 col-xl-4 col-md-4"></div>
         </div>
+        <div className="row">
+            <div className="col-12 mt-5">
+                <Footer/>
+            </div>
+          </div>
       </div>
-    );
+      );
+    }
+    else{
+      return(
+        <div className='error'>
+          <h1><i className='fas mr-3'>&#xf714;</i>This Location Has No Data To Show...<i className='fas ml-2'>&#xf714;</i></h1>
+        </div>
+      )
+  }
+
   }
 
   render() {
     console.log(this.props);
     console.log(this.url);
-    return <div> {this.renderArtist(this.state.result)}</div>;
+    return (
+        <div> 
+          {this.renderStays(this.state.result)} 
+        </div>
+      ); 
+      
   }
   componentDidMount() {
     fetch(this.url, { method: "GET" })
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ result: data });
+        this.setState({ result: data});
         console.log(this.state.result);
       });
   }
-}
-// const SearchResult=() =>{
-//     return(
 
-//         <div>hello from Search result</div>
-//     )
-// }
-// export default SearchResult;
+}
