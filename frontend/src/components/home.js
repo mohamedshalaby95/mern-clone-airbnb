@@ -1,6 +1,7 @@
 import Header from "./header/header";
 import Banner from "./banner/banner";
 import LiveCards from "./LiveCards/Livecards";
+import Online from "./online/online";
 import Footer from "./footer/footer";
 import '../index.css'
 //import  Search  from "./search/search";
@@ -79,6 +80,13 @@ return(
          />
     </div>
     </div>
+
+    <div className="row online-component">
+        <div className="col-12 ">
+        <Online />
+        </div>
+    </div>
+
     <div className="footer">
         <div className="col-12">
             <Footer/>
